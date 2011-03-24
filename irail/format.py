@@ -20,46 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class StationList:
+import json
 
-  def __init__(self, timestamp, version, stations):
-    self.__timestamp = timestamp
-    self.__version = version
-    self.__stations = stations
+from model import *
 
-  def timestamp(self):
-    return self.__timestamp
+class JsonFormat:
 
-  def version(self):
-    return self.__version
+  def __init__(self):
+    self.__format = "json"
 
-  def stations(self):
-    return self.__stations
+  def format(self):
+    return self.__format
 
-class Station:
+  def __convert_station_list(self, dict):
+    stations = []
+    for s in dict['station']:
+      stations.append(self.__convert_station(s))
+    return StationList(dict['timestamp'], dict['version'], stations)
 
-  def __init__(self, name, standardname, id, locationX, locationY):
-    self.__name = name
-    self.__standardname = standardname
-    self.__id = id
-    self.__locationX = locationX
-    self.__locationY = locationY
+  def __convert_station(self, dict):
+    return Station(dict['name'], dict['standardname'], dict['id'], dict['locationX'], dict['locationY'])
 
-  def name(self):
-    return self.__name
-
-  def standardname(self):
-    return self.__standardname
-
-  def id(self):
-    return self.__id
-
-  def locationX(self):
-    return self.__locationX
-
-  def locationY(self):
-    return self.__locationY
-
-  def __str__(self):
-    return "Station " + self.id() + " | " + self.name() + " @ (" + self.locationY() + "," + self.locationX() + ")"
+  def parse_stations(self, response):
+    return self.__convert_station_list(json.load(response))
 

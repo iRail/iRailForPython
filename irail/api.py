@@ -19,9 +19,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+
 import urllib2
-import json
 from model import *
+from format import *
 
 class iRailError:
   """Class representing an error in the iRail API"""
@@ -37,10 +38,19 @@ URLS={
 }
 DEFAULT_ARGS="?format=json"
 
+format = JsonFormat()
+
+def do_request(method, args=None):
+  url = BASE_URL + method + "?format=" + format.format()
+  if args:
+    for key in args.keys():
+      url += "&" + key + "=" + args[key]
+  return urllib2.urlopen(url)
+
 def get_stations():
   """Retrieve the list of stations"""
   try:
-    response = urllib2.urlopen(BASE_URL + URLS['stations'] + DEFAULT_ARGS)
-    return StationsResponse.from_dict(json.load(response))
+    response = do_request(URLS['stations'])
+    return format.parse_stations(response)
   except Exception as e:
     raise iRailError(e)

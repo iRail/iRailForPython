@@ -30,4 +30,4 @@ TODO: decent error handling.
 TODO: decent documentation
 """
 
-__all__ = ["model", "api"]
+__all__ = ["model", "api", "format"]
