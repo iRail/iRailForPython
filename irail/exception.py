@@ -19,15 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""
-The iRail python API Wrapper
 
-See http://project.irail.be/wiki/APIv1 for more information
-on the API.
+class iRailError:
+  """Class representing an error in the iRail API"""
+  def __init__(self, cause):
+    self.__cause = cause
 
-TODO: almost everyting, only get_stations for now.
-TODO: decent error handling.
-TODO: decent documentation
-"""
-
-__all__ = ["model", "api", "format", "exception"]
+  def cause(self):
+    return self.__cause

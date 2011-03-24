@@ -32,6 +32,9 @@ class JsonFormat:
   def format(self):
     return self.__format
 
+  def __str__(self):
+    return self.format()
+
   def __convert_station_list(self, dict):
     stations = []
     for s in dict['station']:

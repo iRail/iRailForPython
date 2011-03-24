@@ -23,14 +23,7 @@
 import urllib2
 from model import *
 from format import *
-
-class iRailError:
-  """Class representing an error in the iRail API"""
-  def __init__(self, cause):
-    self.__cause = cause
-
-  def cause(self):
-    return self.__cause
+from exception import *
 
 BASE_URL="http://api.irail.be/"
 URLS={
@@ -38,19 +31,43 @@ URLS={
 }
 DEFAULT_ARGS="?format=json"
 
-format = JsonFormat()
+class iRailAPI:
 
-def do_request(method, args=None):
-  url = BASE_URL + method + "?format=" + format.format()
-  if args:
-    for key in args.keys():
-      url += "&" + key + "=" + args[key]
-  return urllib2.urlopen(url)
+  def __init__(self, format=None, lang=None):
+    self.set_format(format)
+    self.set_lang(lang)
 
-def get_stations():
-  """Retrieve the list of stations"""
-  try:
-    response = do_request(URLS['stations'])
-    return format.parse_stations(response)
-  except Exception as e:
-    raise iRailError(e)
+  def format(self):
+    return self.__format
+
+  def set_format(self, format):
+    if format:
+      self.__format = format
+    else:
+      self.__format = JsonFormat()
+
+  def lang(self):
+    return self.__lang
+
+  def set_lang(self, lang):
+    if lang:
+      self.__lang = lang
+    else:
+      self.__lang = "EN"
+  
+  def do_request(self, method, args=None):
+    url = BASE_URL + method
+    url += "?format=" + str(self.format())
+    url += "&lang=" + self.lang()
+    if args:
+      for key in args.keys():
+        url += "&" + key + "=" + args[key]
+    return urllib2.urlopen(url)
+  
+  def get_stations(self):
+    """Retrieve the list of stations"""
+    try:
+      response = self.do_request(URLS['stations'])
+      return self.__format.parse_stations(response)
+    except Exception as e:
+      raise iRailError(e)

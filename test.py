@@ -22,9 +22,10 @@
 # THE SOFTWARE.
 
 from irail.model import *
-from irail import api
+from irail.api import iRailAPI
 
 def test_getstations():
+  api = iRailAPI()
   r = api.get_stations()
   print "Version: " + r.version()
   print "Timestamp: " + r.timestamp()
