@@ -32,5 +32,13 @@ def test_getstations():
   for station in r.stations():
     print station
 
+def test_searchstations():
+  api = iRailAPI()
+  stations = api.search_stations("bru")
+  print "--- Stations starting with bru ---"
+  for station in stations:
+    print station
+
 if __name__=="__main__":
   test_getstations()
+  test_searchstations()

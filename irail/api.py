@@ -71,3 +71,8 @@ class iRailAPI:
       return self.__format.parse_stations(response)
     except Exception as e:
       raise iRailError(e)
+
+  def search_stations(self, start):
+    """Retrieve the list of stations that start with a given string"""
+    stations = self.get_stations()
+    return [station for station in stations.stations() if station.name().lower().startswith(start.lower())]
