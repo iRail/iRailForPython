@@ -62,13 +62,23 @@ class iRailAPI:
     if args:
       for key in args.keys():
         url += "&" + key + "=" + args[key]
-    return urllib2.urlopen(url)
+    try:
+      return urllib2.urlopen(url)
+    except urllib2.HTTPError as e:
+      if e.code >= 400 and e.code < 500:
+        raise ClientError(e)
+      elif e.code >= 500 and e.code < 500:
+        raise ServerError(e)
+      else:
+        raise iRailError(e)
   
   def get_stations(self):
     """Retrieve the list of stations"""
     try:
       response = self.do_request(URLS['stations'])
       return self.__format.parse_stations(response)
+    except iRailError as e:
+      raise e
     except Exception as e:
       raise iRailError(e)
 
