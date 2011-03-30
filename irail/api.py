@@ -27,7 +27,8 @@ from exception import *
 
 BASE_URL="http://api.irail.be/"
 URLS={
-    'stations':'stations'
+    'stations':'stations',
+    'schedules':'connections'
 }
 DEFAULT_ARGS="?format=json"
 
@@ -56,7 +57,7 @@ class iRailAPI:
       self.__lang = "EN"
   
   def do_request(self, method, args=None):
-    url = BASE_URL + method
+    url = BASE_URL + method + "/"
     url += "?format=" + str(self.format())
     url += "&lang=" + self.lang()
     if args:
@@ -79,3 +80,14 @@ class iRailAPI:
     """Retrieve the list of stations that start with a given string"""
     stations = self.get_stations()
     return [station for station in stations.stations() if station.name().lower().startswith(start.lower())]
+
+  def get_schedules_by_names(self, fromStation, toStation, date=None, time=None, timeSel=None, types=None):
+    """Get the connections between to stations given by name"""
+    args = {}
+    args['from'] = fromStation
+    args['to'] = toStation
+    response = self.do_request(URLS['schedules'], args)
+    return self.__format.parse_schedules(response)
+
+  def get_schedules(self, fromStation, toStation, date=None, time=None, timeSel=None, typesOfTransport=None):
+    return self.get_schedule_by_names(fromStation.name(), toStation.name(), date, time, timeSel, typesOfTransport)

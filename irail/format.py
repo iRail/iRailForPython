@@ -47,3 +47,9 @@ class JsonFormat:
   def parse_stations(self, response):
     return self.__convert_station_list(json.load(response))
 
+  def __convert_schedule_list(self, dict):
+    # TODO implement
+    return dict
+
+  def parse_schedules(self, response):
+    return self.__convert_schedule_list(json.load(response))

@@ -39,6 +39,12 @@ def test_searchstations():
   for station in stations:
     print station
 
+def test_getschedules():
+  api = iRailAPI()
+  schedules = api.get_schedules_by_names("Courtrai", "Leuven")
+  print schedules
+
 if __name__=="__main__":
   test_getstations()
   test_searchstations()
+  test_getschedules()
