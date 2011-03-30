@@ -20,18 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class StationList:
-
-  def __init__(self, timestamp, version, stations):
+class ResultList:
+  def __init__(self, timestamp, version):
     self.__timestamp = timestamp
     self.__version = version
-    self.__stations = stations
 
   def timestamp(self):
     return self.__timestamp
 
   def version(self):
     return self.__version
+
+class StationList(ResultList):
+
+  def __init__(self, timestamp, version, stations):
+    self.__stations = stations
+    ResultList.__init__(self, timestamp, version)
 
   def stations(self):
     return self.__stations
@@ -62,4 +66,53 @@ class Station:
 
   def __str__(self):
     return "Station " + self.id() + " | " + self.name() + " @ (" + self.locationY() + "," + self.locationX() + ")"
+
+class ConnectionList(ResultList):
+
+  def __init__(self, timestamp, version, connections):
+    self.__connections = connections
+    ResultList.__init__(self, timestamp, version)
+
+  def connections(self):
+    return self.__connections
+
+class Connection:
+
+    def __init__(self, id, departure, vias, arrival, duration):
+      self.__id = id
+      self.__departure = departure
+      self.__vias = vias
+      self.__arrival = arrival
+      self.__duration = duration
+
+    def id(self):
+      return self.__id
+
+    def departure(self):
+      return self.__departure
+
+    def vias(self):
+      return self.__vias
+
+    def arrival(self):
+      return self.__arrival
+
+    def duration(self):
+      return self.__duration
+
+class ConnectionEvent:
+
+  def __init__(self, station, platform, time, delay, vehicle, direction):
+    pass
+
+class Arrival(ConnectionEvent):
+  
+  def __init__(self, station, platform, time, delay, vehicle, direction):
+    ConnectionEvent.__init__(self, station, platform, time, delay, vehicle, direction)
+
+ 
+class Departure(ConnectionEvent):
+
+  def __init__(self, station, platform, time, delay, vehicle, direction):
+    ConnectionEvent.__init__(self, station, platform, time, delay, vehicle, direction)
 
