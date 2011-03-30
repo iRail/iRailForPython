@@ -69,18 +69,11 @@ class iRailAPI:
         raise ClientError(e)
       elif e.code >= 500 and e.code < 500:
         raise ServerError(e)
-      else:
-        raise iRailError(e)
   
   def get_stations(self):
     """Retrieve the list of stations"""
-    try:
-      response = self.do_request(URLS['stations'])
-      return self.__format.parse_stations(response)
-    except iRailError as e:
-      raise e
-    except Exception as e:
-      raise iRailError(e)
+    response = self.do_request(URLS['stations'])
+    return self.__format.parse_stations(response)
 
   def search_stations(self, start):
     """Retrieve the list of stations that start with a given string"""
