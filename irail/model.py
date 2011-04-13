@@ -100,6 +100,14 @@ class Connection:
     def duration(self):
       return self.__duration
 
+    def __str__(self):
+      s = """Connection ({0}):
+  departure: {1}
+  arrival: {2}
+  vias: {3}
+  duration: {4}"""
+      return s.format(self.id(), self.departure(), self.arrival(), self.vias(), self.duration())
+
 class ConnectionEvent:
 
   def __init__(self, station, platform, time, delay, vehicle, direction):

@@ -48,7 +48,27 @@ class JsonFormat:
     return self.__convert_station_list(json.load(response))
 
   def __convert_schedule_list(self, dict):
-    # TODO implement
+    schedules = []
+    for s in dict['connection']:
+      schedules.append(self.__convert_schedule(s))
+    return ConnectionList(dict['timestamp'], dict['version'], schedules)
+
+  def __convert_schedule(self, dict):
+    departure = self.__convert_departure(dict['departure'])
+    if dict.has_key('vias'):
+      vias = self.__convert_vias(dict['vias'])
+    else:
+      vias = None
+    arrival = self.__convert_arrival(dict['arrival'])
+    return Connection(dict['id'], departure, vias, arrival, dict['duration'])
+
+  def __convert_departure(self, dict):
+    return dict
+
+  def __convert_arrival(self, dict):
+    return dict
+
+  def __convert_vias(self, dict):
     return dict
 
   def parse_schedules(self, response):
