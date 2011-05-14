@@ -111,7 +111,34 @@ class Connection:
 class ConnectionEvent:
 
   def __init__(self, station, platform, time, delay, vehicle, direction):
-    pass
+    self.__station = station
+    self.__platform = platform
+    self.__time = time
+    self.__delay = delay
+    self.__vehicle = vehicle
+    self.__direction = direction
+
+  def station(self):
+    return self.__station
+
+  def platform(self):
+    return self.__platform
+
+  def time(self):
+    return self.__time
+
+  def delay(self):
+    return self.__delay
+
+  def vehicle(self):
+    return self.__vehicle
+
+  def direction(self):
+    return self.__direction
+
+  def __str__(self):
+    s = """@{0} (+{1}) -> {2}"""
+    return s.format(self.time(), self.delay(), self.station()) 
 
 class Arrival(ConnectionEvent):
   

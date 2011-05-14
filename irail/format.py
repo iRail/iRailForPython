@@ -63,10 +63,19 @@ class JsonFormat:
     return Connection(dict['id'], departure, vias, arrival, dict['duration'])
 
   def __convert_departure(self, dict):
-    return dict
+    return self.__convert_connection_event(dict, Departure)
+
+  def __convert_connection_event(self, dict, clazz):
+    station = self.__convert_station(dict['stationinfo'])
+    platform = dict['platform'] # TODO use platforminfo
+    time = dict['time']
+    delay = dict['delay']
+    vehicle = dict['vehicle']
+    direction = self.__convert_station(dict['direction'])
+    return clazz(station, platform, time, delay, vehicle, direction)
 
   def __convert_arrival(self, dict):
-    return dict
+    return self.__convert_connection_event(dict, Arrival)
 
   def __convert_vias(self, dict):
     return dict
