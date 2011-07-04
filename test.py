@@ -49,8 +49,8 @@ def test_getliveboard():
   api = iRailAPI()
   schedule = api.get_liveboard_by_name("Gentbrugge")
   print schedule
-  schedule = api.get_liveboard_by_id("BE.NMBS.008893179")
-  print schedule
+  #schedule = api.get_liveboard_by_id("BE.NMBS.008893179")
+  #print schedule
 
 def test_getvehicle():
   api = iRailAPI()
@@ -61,5 +61,5 @@ if __name__=="__main__":
 #  test_getstations()
 #  test_searchstations()
 #  test_getschedules()
-#  test_getliveboard()
-  test_getvehicle()
+  test_getliveboard()
+#  test_getvehicle()

@@ -20,6 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+class Test(object):
+  def repr__(self):
+    return '<%s>' % str('\n '.join('%s : %s' %
+      (k, repr(v)) for (k, v) in self.__dict.iteritems()))
+
+# I wrote object_factory so I don't have to define a seperate class
+# for every return type of a api method.
+# TODO put in class with prity __repr__ and __str__
+def object_factory(d):
+  """object_factory will create an object from a dict or a seq"""
+  new = type('obj', (object,), d)
+  seqs = tuple, list, set, frozenset # all the sequence types
+  for k, v in d.iteritems():
+    if isinstance(v, dict):
+      setattr(new, k, object_factory(v))
+    elif isinstance(v, seqs):
+      setattr(new, k, type(v)(object_factory(i) if isinstance(i, dict) else i for i in v))
+    else:
+      setattr(new, k, v)
+  return new
+  
 class ResultList:
   def __init__(self, timestamp, version):
     self.__timestamp = timestamp
