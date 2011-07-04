@@ -82,3 +82,15 @@ class JsonFormat:
 
   def parse_schedules(self, response):
     return self.__convert_schedule_list(json.load(response))
+
+  def parse_liveboard(self, response):
+      return self.__convert_liveboard(json.load(response))
+
+  def __convert_liveboard(self, dict):
+      return dict['departures']['departure']
+
+  def parse_vehicle(self, response):
+      return self.__convert_liveboard(json.load(response))
+
+  def __convert_vehicle(self, dict):
+      return dict['vehicleinfo']

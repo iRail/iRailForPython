@@ -25,10 +25,14 @@ from model import *
 from format import *
 from exception import *
 
+#curl 'api.irail.be/liveboard/?station=gentbruggee&format=json'
+
 BASE_URL="http://api.irail.be/"
 URLS={
     'stations':'stations',
-    'schedules':'connections'
+    'schedules':'connections',
+    'liveboard': 'liveboard',
+    'vehicle': 'vehicle'
 }
 DEFAULT_ARGS="?format=json"
 
@@ -91,3 +95,19 @@ class iRailAPI:
 
   def get_schedules(self, fromStation, toStation, date=None, time=None, timeSel=None, typesOfTransport=None):
     return self.get_schedule_by_names(fromStation.name(), toStation.name(), date, time, timeSel, typesOfTransport)
+
+  def get_liveboard_by_name(self, name, date=None, time=None, arrdep='DEP'):
+    args = {'station': name}
+    response = self.do_request(URLS['liveboard'], args)
+    return self.__format.parse_liveboard(response)
+
+  def get_liveboard_by_id(self, id, date=None, time=None, arrdep='DEP'):
+    args = {'id': id}
+    response = self.do_request(URLS['liveboard'], args)
+    return self.__format.parse_liveboard(response)
+
+  def get_vehicle_by_id(self, id):
+    args = {'id': id}
+    response = self.do_request(URLS['vehicle'], args)
+    return self.__format.parse_stations(response)
+
