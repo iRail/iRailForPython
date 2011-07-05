@@ -87,10 +87,10 @@ class JsonFormat:
       return self.__convert_liveboard(json.load(response))
 
   def __convert_liveboard(self, dict):
-      return object_factory(dict['departures'])
+      return ObjectFactory(dict['departures'])
 
   def parse_vehicle(self, response):
       return self.__convert_vehicle(json.load(response))
 
   def __convert_vehicle(self, dict):
-      return object_factory(dict['vehicleinfo'])
+      return ObjectFactory(dict['vehicleinfo'])

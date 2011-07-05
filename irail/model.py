@@ -20,32 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class Test(object):
-  def repr__(self):
-    return '<%s>' % str('\n '.join('%s : %s' %
-      (k, repr(v)) for (k, v) in self.__dict.iteritems()))
+# all the sequence types
+_seqs = tuple, list, set, frozenset
 
-# I wrote object_factory so I don't have to define a seperate class
-# for every return type of a api method.
-# TODO abstract seqs, so no more ifs
-# TODO __repr__ and __str__
-def object_factory(d):
-  """object_factory will create an object from a dict so you can use
-  foo.bar instead of foo['bar']. """
-  seqs = tuple, list, set, frozenset # all the sequence types
-  if isinstance(d, seqs):
-      return [object_factory(e) for e in d] #TODO this will conflict with tuple, set, ...
-  else:
-    new = type('obj', (object,), d)
-    for k, v in d.iteritems():
-      if isinstance(v, dict):
-        setattr(new, k, object_factory(v))
-      elif isinstance(v, seqs):
-        setattr(new, k,
-          type(v)(object_factory(i) if isinstance(i, dict) else i for i in v))
-      else:
-        setattr(new, k, v)
-    return new
+# The iRail api returns all ints and timestamps as strings
+class ObjectFactory(object):
+  """Creates an object from a dict so you can use foo.bar instead of foo['bar']."""
+  def __new__(cls, d):
+    if isinstance(d, _seqs):
+      return [ObjectFactory(e) for e in d] #TODO add tuple, set, frozenset
+    elif isinstance(d, dict):
+      obj = object.__new__(cls)
+      for k, v in d.iteritems():
+        setattr(obj, k, ObjectFactory(v))
+      return obj
+    else:
+        return d 
+
+  def __repr__(self):
+    return '<%s>' % str('\n '.join('%s : %s' %
+      (k, repr(v)) for (k, v) in self.__dict__.iteritems()))
   
 class ResultList:
   def __init__(self, timestamp, version):
