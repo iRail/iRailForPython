@@ -24,6 +24,7 @@
 _seqs = tuple, list, set, frozenset
 
 # The iRail api returns all ints and timestamps as strings
+# so the python api makes the same mistake not my fault!
 class ObjectFactory(object):
   """Creates an object from a dict so you can use foo.bar instead of foo['bar']."""
   def __new__(cls, d):

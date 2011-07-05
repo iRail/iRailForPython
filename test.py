@@ -61,4 +61,4 @@ if __name__=="__main__":
 #  test_getstations()
 #  test_searchstations()   test_getschedules()
   test_getliveboard()
-#  test_getvehicle()
+  test_getvehicle()
