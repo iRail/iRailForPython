@@ -84,13 +84,13 @@ class JsonFormat:
     return self.__convert_schedule_list(json.load(response))
 
   def parse_liveboard(self, response):
-      return object_factory(self.__convert_liveboard(json.load(response)))
+      return self.__convert_liveboard(json.load(response))
 
   def __convert_liveboard(self, dict):
       return object_factory(dict['departures'])
 
   def parse_vehicle(self, response):
-      return object_factory(self.__convert_vehicle(json.load(response)))
+      return self.__convert_vehicle(json.load(response))
 
   def __convert_vehicle(self, dict):
       return object_factory(dict['vehicleinfo'])

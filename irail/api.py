@@ -109,5 +109,5 @@ class iRailAPI:
   def get_vehicle_by_id(self, id):
     args = {'id': id}
     response = self.do_request(URLS['vehicle'], args)
-    return self.__format.parse_stations(response)
+    return self.__format.parse_vehicle(response)
 
